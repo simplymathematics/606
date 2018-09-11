@@ -1,0 +1,78 @@
+---
+title: "606 Chapter 1"
+author: "simplymathematics"
+date: "September 9, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Chapter 1 Homework
+
+## Setup
+
+```{r}
+# Uncomment this line if you don't have the openintro package
+# install.packages('openintro')
+library(openintro); data(heartTr)
+head(heartTr,100)
+```
+## 1.8
+### A
+Each row represents a person in the dataset
+### B
+```{r}
+nrow(datas)
+```
+### C
+
+id: numerical, discrete
+sex: categorical
+marital: categorical
+grossIncome: categorical, ordinal
+smoke: categorical
+amtWeekends: numerical, discrete
+amntWeekdays: numerical, discrete
+
+## 1.10
+
+The population is children between 5 and 15. The sample is 160 of them. However, this study would be poorly generalizable because there is no randomization of the test/control groups, there is no randomized sample selection, and we have no idea how these children were selected. Imagine how the results in this sample might skew a study done on students at an accelerated school versus the general population.
+## 1.48
+```{r}
+nums = c(57,66,69,71,72,73,74,77,78,78,79,79,81,81,82,83,83,88,89,94)
+summary(nums)
+boxplot(nums, main= "Scores of 20 statistics students", ylab = "Scores (%)")
+```
+## 1.50
+A is basically normally distributed, which corresponds to 2. B is pretty uniformly distributed, which follows box plot 3. C is distributed like a Poisson distribution, which corresponds to boxplot 1. 
+## 1.56
+
+a. skewed right, IQR and median
+b. symmetric, mean and std
+c. skewed left, IQR and median
+d. skewed left, IQR and median
+## 1.70
+
+### A
+The mosaic shows that a person receiving treatment was much more like to survive in the long-term.
+### B
+The median and mean survival times for a person who received a transplant are much higher than those who didn't. However, the treatment is not always successful. On average, a transplant adda bout 200 days of survival time.
+### C
+Approximately 4/5 of the control group patients died and only 2/3 of the transplant patients died over the course of the study.
+### D
+i. The claim being tested is "Heart transplants add survival time for these patients"
+ii. 
+```{r}
+#nrow(heartTr)
+nrow(subset(heartTr, survived =='dead'))
+nrow(subset(heartTr, survived =='alive'))
+a = nrow(subset(heartTr, transplant == 'treatment'))
+a
+b = nrow(subset(heartTr, transplant =='control'))
+b
+a/b
+# ...were the simulated differents in proportions are different
+```
+iii. The simulations below show that the transplant program is likely effective.
