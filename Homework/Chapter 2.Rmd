@@ -1,0 +1,174 @@
+---
+title: "Homework 2"
+author: "simplymathematics"
+date: "September 22, 2018"
+output: html_document
+---
+Graded: 2.6, 2.8, 2.20, 2.30, 2.38, 2.44
+
+
+## 2.6
+- A pair of dice will never give you a one.
+- Since there are 36 ways to roll 2 dice and 4 ways to rolls a 5 (1 + 4, 4+1, 2+3, 3+2), there is a 5/36 chance of rolling a 5.
+- Since there are 36 ways to roll 2 dice and only 1 way to get a 12 (6+6), the probability is 1/36. 
+
+## 2.8
+- Poverty and speaking an language other than English are not disjoint
+- Draw a venn diagram: 14.6 in poverty, 20.7, and 4.2 both
+
+```{r}
+poverty <- 14.6
+ESL <- 20.7
+both <- 4.2
+library(VennDiagram)
+venn.plot <- draw.pairwise.venn(14.6, 20.7, 4.2, c("Poverty", "Not English"))
+grid.draw(venn.plot)
+grid.newpage();
+
+```
+- 10.4%  live in poverty and speak only English at home 
+- 16.5+4.2+10.4 = 31.1% live in poverty or speak a foreign language at home
+- 85.4% don't live in poverty and 79.3% only speak English at home. Because these are independent events, their total probability is multiplied and = 69%
+- Independence relies on any one of these equivalent conditions
+$$
+P(A \cap B) = P(A|B)P(B)  \\
+P(A|B) = P(A)             \\
+P(B|A) = P(B)
+$$ 
+if and only if A and B are independent. If we assume that A is the ESL status and B is the poverty level, then we see that 
+
+```{r}
+p_a = 20.7
+p_b = 14.6
+p_a_and_b = 4.2
+p_a_given_b = p_a_and_b/p_b
+p_a_given_b
+p_a
+```
+
+$$
+P(B|A) \neq P(B)
+$$
+
+## 2.20
+```{r}
+
+df <- data.frame(matrix(c(78,19,11,108, 23,23,9,55,13,12,16,41,114,54,36,204),nrow=4,ncol=4))
+
+rownames(df) <- c("mblue", "mbrown", "mgreen", "totals")
+colnames(df) <- c("fblue", "fbrown", "fgreen", "totals")
+
+df
+  
+```
+
+- Probability that male or partner has blue eyes is 71%. Where m is a male, f is a female, b represents blue eyes, and br represents brown. 
+```{r}
+mb = 114
+fb = 108
+bfm = 78
+answer = (mb+ fb-bfm)/204
+answer
+```
+
+- The probability that the partner has blue eyes given the male has blue eyes is .68.
+```{r}
+p_a = fb
+p_b = mb
+p_a_and_b = bfm
+p_a_given_b = p_a_and_b/p_b
+p_a_given_b
+```
+- They do not appear to be independent because the below is
+```{r}
+p_a == p_a_given_b
+```
+- Probability of fb | mbr .35
+```{r}
+pfb = 108/204
+pmbr = 54/204
+fbmbr = 19/204
+a = pfb
+b = pmbr
+ab = fbmbr
+pagb = ab/b
+pagb
+
+```
+- Independence? No
+```{r}
+a == pagb
+```
+## 2.30
+```{r}
+df <- data.frame(matrix(c(13,15,28,59,8,67,72,23,95),nrow=3,ncol=3))
+rownames(df) <- c("fiction", "non-fiction", "totals")
+colnames(df) <- c("hardcover", "paperback", "totals")
+df
+  
+```
+- Probability of drawing a hardcover book, then a paperback fiction without replacement .21
+```{r}
+(28/95)*(67/94)
+```
+
+- The probabilty of fiction book 1st then hardcover 2nd, without replacement, is .2243:
+```{r}
+fiction_and_hardcover = 13/95
+fiction_not_hardcover = 59/95
+second_fiction_given_fh = 27/94
+second_fiction_given_nfh = 28/94
+h_after_fh = second_fiction_given_fh*fiction_and_hardcover
+h_after_nfh  =second_fiction_given_nfh*fiction_not_hardcover
+answer = h_after_nfh+h_after_fh
+answer
+```
+- With replacement, it is .2234
+```{r}
+(72/95)*(28/95)
+```
+- The sample is large enough that a single book doesn't much effect the results.
+
+## 2.38
+We know that revenues are \$25 for first bag and \$35 or the 2nd (making revenue \$60 for each person who checks 2 bags). We also know that 54% people check no bags, 34% check 1, and 12% check 2. The expected per passenger is
+```{r}
+df <- data.frame(matrix(c(0,25,60,.54,.34,.12),nrow=3,ncol=2))
+colnames(df) <- c("x","P(x)")
+df
+```
+The expected value is
+```{r}
+expected = 0*.54 + 25*.34+.12*60
+expected
+```
+Likewise, the standard deviation can be found by
+```{r}
+prices = c(0,25,60)
+means = c(.54,.34,.12)
+vec = c(prices - expected)
+squares = c(vec * vec)
+squares %*% means
+(squares %*% means)^.5
+```
+
+## 2.44
+
+```{r}
+df <- data.frame(matrix(c(9999, 14999, 24999, 34999, 49999, 64999, 74999, 99999, 100000,.022,.047,.158,.183,.212,.139,.058,.084,.097),nrow=9,ncol=2))
+colnames(df) <- c("income up to","total")
+df
+barplot(df$total)
+```
+
+Personal income tends to be grouped near \$43k while a sizeable amount of people also make more than \$75k. In fact, 62% of people make less than $50,000. 
+```{r}
+sum(df$`total`[0:5])
+```
+If we assume that gender is independent of income, then the probability of a woman making less than $50,000 is the same as the probability for the total population. However, that population is only 1/2 female. So, we'd multiply these two seemingly independent events together to get
+```{r}
+.622 * .5
+```
+However since we know that the probability of a person being a woman given that they make <\$50k a year is 71.8%, we know that these events are not independent becase
+$$ P(A) \neq P(A|B) $$ s
+
+
