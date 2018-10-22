@@ -1,0 +1,133 @@
+---
+title: "606 Chapter 4"
+author: "simplymathematics"
+date: "October 21, 2018"
+output: html_document
+---
+# Chapter 4
+
+## 4.4
+### a 
+Mean : 171.1
+Median : 170.3
+### b
+sd: 9.4
+IQR: 177.8-163.8 = 14
+### c
+A 180 cm person would be among the tallest 25%. A person who is 155cm tall is among the shortest 25%. 
+### d
+We would expect them to be different because we would be sampling a different population.
+### e
+The variability is 9.4/(507)^.5  = .401
+
+## 4.14
+### a
+True, because the the 95% confidence interval is between 80.41 and 89.11.
+### b 
+False. The sample skew does not invalidate a sample mean.
+### c 
+True, because that's what confidence interval means.
+### d 
+False. This this is not a survey of total spending, just holiday spending.
+### e 
+True. a 90% Confidence Interval would be smaller because it would cover fewer options.
+### f
+To decrease the margin of error by 2/3, we'd have to have 9 times the sample size. 
+
+### g
+The standard  error is +/-
+$$
+\frac{\sigma}{\sqrt{n}} = \frac{\sigma}{\sqrt{436}} \text{ where} \\
+\sigma = \frac{\frac{89.11+80.42}{2}-80.42}{1.96} = 4.35 \\
+\rightarrow \frac{\sigma}{\sqrt{n}} = .21
+$$
+
+## 4.24
+
+### a
+Yes. the study used random, independednt samples of a sufficient number (30 $n$ < 10% population).
+
+### b
+```{r}
+mean = 30.69
+sd = 4.31
+xbar = 32
+n = 36
+s = sd/sqrt(n)
+z <- (mean-xbar)/s
+z
+pnorm(-abs(z))
+```
+There is sufficient evidence to support the claim that gifted children read earlier. If the population mean is 32 months, we have a 3.4% of obtaining a sample of 36 children with an average of 30.69 months.
+```{r}
+mean = 30.69
+sd = 4.31
+s = sd/sqrt(n)
+upper <- mean + s * 1.65
+lower <- mean - s * 1.65
+CI <- c(lower, upper)
+CI
+```
+They agree because they describe the same data from two viewpoints.
+## 4.26
+```{r}
+mean = 118.2
+sd = 6.5
+n = 36
+s = sd/sqrt(n)
+a = .1
+z <- (xbar-100)/s
+z
+pnorm(z)
+```
+There is sufficient evidence to support the claim that the average IQ of mothers of gifted children is different than that of the general population.
+
+```{r}
+
+mean = 118.2
+sd = 6.5
+n = 36
+
+s = sd/sqrt(n)
+upper <- mean + s * 1.65
+lower <- mean - s * 1.65
+CI <- c(lower, upper)
+CI
+```
+
+## 4.34
+A "sampling distribution" is vector that contains on the sample means.
+
+The CLT tells us that the sampling distribution approaches the normal distribution if the sample size is at least 30.
+
+The mean sampling distribution is equal to the population mean.
+
+The standard deviation of the sampling distribution of the sample mean is 
+$$
+\frac{\sigma}{\sqrt{n}}
+$$
+As the sample size increases, the shape of the sampling distribution becomes more normal.
+## 4.40
+```{r}
+mean = 9000
+sd = 1000
+z = (10500 - mean)/sd
+1 -pnorm(z)
+```
+The P(x = 10500) is 6%. 
+
+```{r}
+n = 15
+s = sd/sqrt(n)
+s
+```
+The standard deviation of the sampling distribution is 258.
+
+```{r}
+z = (10500-mean)/(s)
+z
+1- pnorm(z)
+```
+There is a miniscule probability associated with a z-score of 5.8.
+## 4.48
+As the sample size increases, the absolute value of Z increases. This decreases the probaility.
