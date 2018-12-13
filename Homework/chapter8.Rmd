@@ -1,0 +1,88 @@
+---
+title: "606 Chapter 8"
+author: "simplymathematics"
+date: "December 8, 2018"
+output: html_document
+---
+
+# Chapter 8
+## 8.2
+### a
+Assume $\alpha = .05 $ and that
+$$
+y = \beta_0 + \beta_1 x
+$$
+such that
+$$
+\beta_1 = -1.93, \beta_9 = 120.07 \implies \\
+y = 120.07 - 1.93x
+$$
+### b
+The slope represents the average increase in y per unite x. In this case, the average birth weight decrease an average of 1.93 ounces if a child is not the first born.
+### c
+$ SE_{b_1} = 1.19$
+
+$$
+H_0 : \beta_1 = 0 \\
+H_1 : \beta_1 \neq 0
+$$
+### d
+$ t = \frac{b_1-\beta_0}{SE_{b_1}} = \frac{-1.93}{1.19} = -1.62$
+```{r}
+t = -1.93/1.19
+pt(t, df=2)
+
+```
+$$
+p(t) > \alpha \implies H_0
+$$
+We are unable to reject the null hypothesis.
+## 8.4
+### a
+$$
+y = 18.93 -9.11x_1+2.10x_2+2.15x_3
+$$
+### b
+Eth: the average number of absent days increases by 9.11 if ethnic background is aboriginal.
+Sex: The average number of absent days increases by 3.1 days if the person is male
+Lrn: The average number of absent days increases on average by 2.15 days if the person is a slow learner
+### c
+$$
+y = 18.93-9.11(0) + 3.10(1) +2.15(1) = 24.18 \\
+\text{Residual: } y - \hat{y} = 2-14.18 = -22.18
+$$
+```{r}
+var.e = 240.57
+var.y = 264.17
+n = 146 
+k = 3
+r.sq = 1-var.e/var.y
+r.sq
+r.sq.adj =r.sq * (n-1)/(n-1-k)
+r.sq.adj
+```
+
+## 8.8
+No learner status contributes the most variance and should be removed in the backwards elimination process, though I'm not sure it would improve the overall model. 
+## 8.16
+O rings tend to get damanged in colder temperatures. The model shown says that for every decrease in temperature by 1 degree, the chance of O ring failure increases by .2%. 
+$$
+f(t) = \frac{1}{1+e^{11.66 - .21t}}
+$$
+
+Yes. As temperatures decrease, the failure rate of o-rings increases rapidly.
+## 8.18
+$$
+\log \big(\frac{p}{1-p}\big) = 11.66 - .21 * temperature 
+$$
+```{r}
+model <- function(t){
+  return (1/(1+exp(1)^(11.66-.21*t)))
+}
+model(51)
+model(53)
+model(55)
+temp.range = c(0:100)
+plot(model(1:100))
+```
+In order for the model to be valid, the logistic model requires the dependent variable to binary. It is. The observations must be independent, and that might not be true. We could be seeing failures due to wear that coincidentally happened on cold days. We also need a sample size of 1/.9 = 11, which we have.

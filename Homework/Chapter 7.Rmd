@@ -1,0 +1,50 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+#Chapter 7
+
+## 7.24
+
+a. There appears to be a weak linear relationship between number of calories and the number of carbohydrates.  
+b. The explanatory variable is the number of calories. The response variable is the number of carbohydrate.  
+c. A regression line can be used in this case to predict the number of carbohydrates. 
+d. No. The residuals do not appear to be randomly distributed.
+
+## 7.26
+
+a. y = 50.6 + .72*x 
+b. The average travel time at 0 miles is 51 minutes. Each additional mile add .73 minutes.  
+c. $R^2 = .45$, 45% of the variance is explained by this model.  
+d. 167 cm
+e. 167-160 = 7cm. The residual is the difference between measured and expected values.
+f. This model would be a bad predictor for a baby because that would be extrapolation.
+
+## 7.30
+a. y = .36 + 4.0x  
+b. The base heart weight is -.357 grams  
+c. The heart inceases in mass by 4.0 grams per kg of body weight.  
+d. 64% of the variance is explained by the model.
+e. A correlation of .80 indicates a strong, positive relationship.
+
+## 7.40
+Given x = -.0883 and y = 3.9983, and $\alpha = .05$. The estimated intercept is give as $b_0 = y - b1x$. Then, I solve for b1. 
+
+$$
+ba = \frac{b_0-y}{-x} = \frac{y-b_0}{x} = .1325
+$$
+The standard error is 
+$$
+SE_{b_1} = .0322 \implies \\
+t = \frac{b_1 - \beta_1}{SE_{b_1}} = \frac{.1325}{.0322} = 4.13
+p = .0000 
+$$
+Because our p-value is less than our alpha, we can reject the null hypothesis. There is sufficient evidence to saye that the relationship between teaching evaluation and beauty score is positive.
+
+ - Indepedent: fulfilled if proffessors were randonly chosen.
+ - linear: satisfied as above
+ - equal variance: the residual spread is roughly the same everywhere
+ - normal residuals: the residuals plot looks normal
+ 
+A simple least squares is appropriate because all conditions appear to be met.

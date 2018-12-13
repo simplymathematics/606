@@ -1,0 +1,131 @@
+---
+title: "Chapter 6 606"
+author: "simplymathematics"
+date: "November 4, 2018"
+output: html_document
+---
+
+# 6.6
+On June 28, 2012 the U.S. Supreme Court upheld the much debated 2010 healthcare law, declaring it constitutional. A Gallup poll released the day after this decision
+indicates that 46% of 1,012 Americans agree with this decision. At a 95% confidence level, this sample has a 3% margin of error. Based on this information, determine if the following statements are true or false, and explain your reasoning.
+
+False
+We are 100% certain that the percentage  of Americans in this sample support that support the decision is 46%.
+
+
+True
+We are 95% confident that between 43% and 49% of Americans support the decision of the
+U.S. Supreme Court on the 2010 healthcare law because the 95% CI is [43%,49%].
+
+False
+If we considered random samples, we could say nothing of the confidence interval of the sample data using the population data.
+
+False
+If the confidence level decreases, then the margin of error would also decrease. 
+
+# 6.12
+```{r]}
+p.hat = .48
+n = 1259
+``` 
+A parameter is a descriptive measure for a population-- a statistic describes a sample.
+
+For $ C.I. = 95%$
+
+$z* =1.96$
+
+Then the margin of error is
+$$
+ME = z^*\cdot\sqrt{\frac{\hat p(1-\hat p)}{n}} = .0276
+$$
+p + ME = 51%
+p - ME = 45%
+
+
+The normal is a good approximation because np and n(1-p) are both greater than 10.
+
+The CI contains the .50 and thus is appears that 50% of Americans think marijuana should be legalized. Since 50% is not more than half, the piece's statement wasn't justified.
+
+# 6.20
+```{r}
+p.hat = .48
+ci = .95
+ME = .02
+z = 1.96
+n = (z*sqrt(p.hat*(1-p.hat))/ME)^2
+ceiling(n)
+```
+We would need to survey about 2400 Americans.
+
+# 6.28
+```{r}
+n1 = 11545
+p1 = .08
+n2 = 4691
+p2 =.088
+c = .95
+z = 1.96
+
+ME = z*sqrt((p1*(1-p1)/n1)+((p2*(1-p2)/n2)))
+ME
+bottom = p1 - p2 - ME
+top = p1 -p2 + ME
+interval = round(c(bottom, top),4)*100
+interval
+```
+We are 95% confident that the true proportion of Californians who lack sleep is within this interval of percentage from the Oregonian mean.
+
+
+# 6.44
+
+```{r}
+n = 426
+a = .05
+```
+H0: The population proportions are as mentioned.  
+Ha: The population proportions are different than mentioned.  
+
+When we want to see how 1 variable varies with another, we use a $ \chi^2 $ test.  
+
+We must assume the samples are independent of each other. 
+
+$$
+\chi^2 = \sum \frac{E}{(O-E)^2}=284 \\
+df = c - 1 = 3
+$$
+
+```{r}
+observed = c(4,16,61,345)/426
+expected = c(.048,.147,.396, 1-.048-.147-.396)
+chisq.test(x = observed, p = expected)
+```
+We can reject the null hypothesis.
+
+# 6.48
+## a
+We will use a $\chi^2$ goodness of fit test with an $\alpha = .05$  
+## b
+H0: The variables are independent  
+Ha: The variables are dependent  
+
+## c
+```{r}
+ratio = 2607/48132
+ratio
+```
+5% of women suffer from depression.
+## d
+```{r}
+ratio * 6224
+```
+
+## e
+```{r}
+1-pchisq(20.93, df = 4)
+```
+
+## f
+We can reject the null hypothesis because there is sufficient evidence that clinical depress is related to caffeinated coffee consumption.
+
+## g
+Yes. It appears that coffee may influence one's propensity for depression.

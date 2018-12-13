@@ -1,0 +1,191 @@
+---
+title: "Chapter 5 HW"
+author: "simplymathematics"
+date: "November 4, 2018"
+output: html_document
+---
+
+
+
+#Chapter 5
+
+
+##5.6
+A 90% confidence interval for a population mean is (65,
+77).  The population distribution is approximately normal and the population standard deviation is  unknown.   This  confidence  interval  is  based  on  a  simple  random  sample  of  25  observations. Calculate the sample mean, the margin of error, and the sample standard deviation. Because it has <30 samples, we will use the student's T distribution.
+
+###a
+
+```{r}
+n = 25 
+top = 77
+bottom = 65
+df = sqrt(n)
+mean = (bottom+top)/2
+margin.of.error = (top-bottom)/2
+t = qt(.95, 24)
+s = margin.of.error*df/t
+mean
+margin.of.error
+s
+```
+
+###b
+
+
+## 5.14
+SAT  scores  of  students  at  an  Ivy  League  college  are  distributed  with  a
+standard deviation of 250 points.  Two statistics students, Raina and Luke, want to estimate the average SAT score of students at this college as part of a class project. They want their margin of error to be no more than 25 points.
+
+(a)  Raina wants to use a 90% confidence interval.  How large a sample should she collect?
+
+Given $ \sigma = 250 $ and $ME = 25$. If we assume the sample > 30, then the CLT applies and we can assume a normal distribution. The margin of erro is the product of the z score, the standard deviation, and the inverse of the sqrt of the sample size. Such that
+$$
+ME = z*\frac{\sigma}{\sqrt{n}} \implies \\
+\sqrt{n} = z* \frac{\sigma}{ME} \implies \\ 
+n = (z*\frac{\sigma}{ME})^2 \implies \\
+n = (1.645 * \frac{250}{25}) = 16.45
+$$
+
+
+
+(b)  Luke  wants  to  use  a  99%  confidence  interval.   Without  calculating  the  actual  sample  size, determine  whether  his  sample  should  be  larger  or  smaller  than  Raina’s,  and  explain  your reasoning.
+
+The minimum required sample size of the 99% CI would be higere than the sample size for the 90% CI.
+
+
+(c)  Calculate the minimum required sample size for Luke.
+
+```{r}
+z  = round(qnorm(.005),2)
+sigma = 250
+ME = 25
+n = (z*sigma/ME)^2
+round(n,0)
+```
+
+## 5.20
+The National Center of Education Statistics conducted
+a survey of high school seniors, collecting test data on reading, writing, and several other subjects. Here we examine a simple random sample of 200 students from this survey.  Side-by-side box plots of reading and writing scores as well as a histogram of the differences in scores are shown below.
+
+### a 
+Is there a clear difference in the average reading and writing scores?
+
+Given $n = 200$, $AD = -.545$, and $ sd = 8.887$, and $\alpha = .05$, there is not a clear difference between the reading and writing scores.
+
+### b 
+Are the reading and writing scores of each student independent of each other?
+
+The scores are not independent of each other because intelligent people will ikely score high on both.
+
+### c 
+Create hypotheses appropriate for the following research question: is there an evident difference in the average scores of students in the reading and writing exam
+
+Null: There is no difference between average scores of reading and writing exams.  
+Alternatiev: Thers is a difference between average scores of reading and writin exams.
+
+### d
+Check the conditions required to complete this test.
+
+Independence: n < 10%  
+Randomization: Simple Random Sample  
+Normal: $200 > 30 \implies CLT \implies \text{normal distribution}$
+
+### e
+
+```{r}
+n = 200
+sd = 8.887
+AD = -.545
+
+t = AD/(sd/sqrt(n))
+print("T is: ")
+t
+df = n-1
+print('Critical T: ')
+qt(p = .95 ,df = df)
+
+dt(t,df) < .025
+
+```
+We failed to reject the null hypothesis because there is not sufficience evidence to claim a difference between the two average test scores.
+
+### f
+Type 1 Error: Reject null falsely.  
+Type 2 Error: Fail to reject the null hypothesis when the null hypothesis is false is false.
+
+Since we failed to reject the null hypothesis, we may have made a Type 2 error. That means that we would could have seen a lack of difference between the test scores when their is one.
+
+### g
+
+Because we failed to reject the null hypothesis, it seems likely that the average difference is 0. 
+
+## 5.32
+Each year the US Environmental Protection Agency (EPA) releases fuel economy data on cars manufactured in that year. Below are summary statistics on fuel efficiency (in miles/gallon) from random samples of cars with manual and automatic transmissions manufactured in 2012.  Do these data provide strong evidence of a difference between the average fuel efficiency of cars with manual and automatic transmissions in terms of their average city mileage?  Assume that conditions for inference are satisfied.
+
+$$ n_1 = n_2 = 26 \\
+\bar x_1 = 16.12 \\
+s_1 =3.58 \\
+\bar x_2 = 19.85 \\
+x_2 = 4.51 \\ 
+s_2 = 4.51
+$$
+We will also assume a CI of 90% and a two-tailed test such that 
+$$
+\alpha = .05
+$$
+### b
+Independence: 26 cars < 10% of all cars  
+Randomization: Simple, random sample  
+Normal: n < 30 $\implies$ CLT does not apply. They are roughly symmetric.
+
+### c
+$$
+H_0: \mu_1 = \mu_2 \\
+H_a: \mu_1 \neq \mu_2 
+$$
+```{r}
+x1 = 16.12
+x2 = 19.85
+s1 = 3.58
+s2 =4.51
+n1 = n2 = 26
+t = (x1-x2)/sqrt((s1^2/n1)+(s2^2/n2))
+print("T Statistic: ")
+t
+df = min(n1 - 1, n2-1)
+print("Degrees of Freedom: ")
+df
+```
+```{r}
+dt(t,df) < .05
+```
+Therefore we reject the null hypothesis. There is sufficience evidence to suggest there is a difference in fuel efficiencies in automatic and manual transmissions.  
+## 5.48
+The General Social Survey collects data on demographics, education, and work, among many other characteristics of US residents. Using ANOVA, we can
+consider educational attainment levels for all 1,172 respondents at once. Below are the distributions of hours worked by educational attainment and relevant summary statistics that will be helpful in carrying out this analysis.
+
+### a
+$$ H_0: \mu_1 = \mu_2 = \mu_3 = \mu_4 = \mu_5 $$
+$$ H_a: \exists(\mu_1 \neq \mu_2 \neq \mu_3 \neq \mu_4 \neq \mu_5)$$
+
+### b
+Independence: These groups are mutually exclusive and therefore independent.  
+Randomization: simple, random samples  
+Normal: n > 30 for all groups $\implies$ CLT  
+Equal Variances: satisifed because the biggest ratio of the square of variance is less than 2.
+
+### c
+$$ 
+df_{groups} = k-1 = 4 \\
+df_{error} = \text{measurements} - k = 1176 \\
+df_{total} = df{groups} + df{error} = 1171 \\
+MSG = \frac{SS_{groups}}{df_{error}} = 229 \\
+F = \frac{MSG}{MSE} = 2.189 \\
+$$
+```{r}
+P = .0682
+pt()
+P < .05
+```
+Fail to reject $H_0$. There is insufficient evidence to suggest that any of the groups has a different mean.

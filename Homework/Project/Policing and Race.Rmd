@@ -1,0 +1,93 @@
+---
+title: "Policing and Race"
+author: "simplymathematics"
+date: "December 13, 2018"
+output: html_document
+---
+
+# Introduction
+
+Stop and frisk (also known as stop, question, frisk by the NYPD) has been a controversial policing tactic. In 2013, [Floyd v City of New York](https://ccrjustice.org/sites/default/files/assets/Floyd_Complaint_08.01.31.pdf), the ACLU alleged that this program was unconstitutional and discriminated base on race. Eventually, the city was allowed to proceed with an overhaul of the policing system in NYC. However, I'm going to investigate if those changes truly changed the NYPD's policies of enforcing equally across race.
+
+# Data
+## Research Question
+From the self-reported NYPD data, is there evidence of racialized policing? We will use a $\alpha = .01$ for our confidence level.
+
+$H_0:$ There is no evidence of racialized policing.
+$H_A:$ There is evidence of racialized policing.
+
+## Observations
+I downloaded the 2017 arrest data from NYC Open Data. It contains the records of 1.7 million arrests. That's almost 1/4 peolple in NYC! From there, I took a simple random sample of these arrests using the Linux kernel utility shuf. At 260 MB the original file was far too large to read into memory at once. 
+```
+shuf -n 60000 NYPD_Arrests_Data__Historic_.csv > arrest_sample.csv
+```
+##  Data Collection
+Demographic data was obtained from the 2010 census records and the 2017 data was randomly sampled from all arrest data in NYC. 
+
+## Type of Study
+This is an observational study that will attempt to relate arrest rates to the race of the person being arrested. The relevant statistics are arrest records and racial demographics.
+
+## Scope of Inference 
+
+Our data is within the scope of our model. Our observations are a simple random sample of all arrests. Each cell in the contigency table has more than 5 expected cases. If assume that each arrest is independent of the others, than these are independent events. Additionally, because the 2010 census data was the most recent available, large demographic changes from these numbers would influence the results. However, the rapid gentrification of the city would suggest a whiter population, which amplify any existing disparity beyond what we measure here.
+
+# Exploratory Data Analysis
+
+```{r echo = FALSE}
+
+
+stops <- read.csv("sqf-2017.csv")
+with(stops, table(stops$race, stops$year));
+stop.amer.ind <- 38
+stop.asian.pacific <-737
+stop.white <- 1270
+stop.hispanic <- 873 + 2753
+stop.black <-6498+873
+stops <- c(stop.amer.ind, stop.asian.pacific, stop.black, stop.hispanic, stop.white) 
+
+
+stop.total <- sum(stops)
+
+total <- (57512 + 3597341 + 2158851 + 1038388 + 5147 + 2088510 + 177225) #This is different than population total because census data treats 'Hispanic' separately than race, leading to double counting of ~2 million people. This is fine for my purposes however as the census data still accurately reports who identifies as 'black'  and 'white' or 'Hispanic' and people are free to choose multiple options. Because of the discrepancies in racial bookeeping in the agencies, each hispanic person will be double counted as either white or black from the information provided by the NYPD. This ensures that a person's bi-racial status does not affect their race or the independence between sets.
+
+
+exp.amer.ind <- 57512
+exp.white <- 3597341
+exp.asian.pacific <- (1038388+5147)
+exp.black <- 2088510
+exp.hispanic <-(2158851+177225)
+
+
+
+measured <- c(stop.amer.ind, stop.asian.pacific, stop.black, stop.hispanic, stop.white)
+expected <- c(exp.amer.ind, exp.asian.pacific, exp.black, exp.hispanic, exp.white)/total*stop.total
+expected.total <- sum(expected)
+
+```
+We can see the demographic breakdown of NYC by race below.
+```{r echo = FALSE}
+barplot(expected, main ="Population by Race", names.arg = c("Amerindian", "Asian",  "Black", "Hispanic", "White"))
+
+```
+Likewise, we can see the same categories when it comes to policing. Even from these simple bar graphs, we can see a substantial difference in these numbers. In particular, black people are twice as likely to be stopped as their population suggests. Additionally, white people are a fraction of likely to be stopped by police as their population would suggest. 
+```{r echo=FALSE}
+barplot(measured, main ="Police Stops by Race", names.arg = c("Amerindian", "Asian",  "Black", "Hispanic", "White"))
+```
+
+# Inference
+```{r echo = FALSE}
+chisq.test(as.table(rbind(measured,expected)), simulate.p.value = FALSE)
+```
+
+# Conclusions
+
+Because the p-vaule of $2.2*10^{-16} < .01,$ we can reject the null hypothesis that there is no evidence for racialized policing. However, the lack of current demographic data makes the demographic data an estimate, which could skew the results. As discussed above, I'd expect the results to skew towards racialized policing as the city becomes more white, but without annual demographic data, it is impossible to tell. Since the study focuses on stops rather than arrests, it highlight the collective experience of individual officers. To that end, it may be highlighting individualized racial biases rather than systemic policy. Additionally, other factors like socio-economic indicators and neighborhood could cause some underlying relationships. However, what's clear from this data is that NYPD policing disproportionately effects communities of color whether by causal policy, systemic bias, or a confluence of factors outside the control of the NYPD. In order to parse one cause from another, it would be interesting to look out the break-down of crimes and criminal outcomes across race rather than just stops. However, that was outside the scope of this project.
+
+
+# Sources : 
+[Chi-Square Test](http://mathworld.wolfram.com/Chi-SquaredTest.html)
+
+Source for expected values:[2010 Census:](https://factfinder.census.gov/faces/tableservices/jsf/pages/productview.xhtml?src=CF)
+Source for measured values: [NYC Open Data](https://data.cityofnewyork.us/Public-Safety/The-Stop-Question-and-Frisk-Data/ftxv-d5ix/data)
+
+Source for Stop and Frisk Lawsuit: [Floyd v City of New York](https://ccrjustice.org/sites/default/files/assets/Floyd_Complaint_08.01.31.pdf)

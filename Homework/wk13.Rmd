@@ -1,0 +1,13 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+$$
+\frac{d}{dx} (x\log x-x) \\
+= -(\frac{d}{dx}(x))+\frac{d}{dx}(x\log(x)) \\ 
+= -1 + \log(x) \frac{d}{dx}(x) + x \frac{d}{dx}(\log (x)) \\
+= -1 + x (\frac{x}{dx}(\log(x)))+1 \log (x) \\
+= -1 + \log(x) + \frac{1}{x}x \\
+= \log (x)
+$$
