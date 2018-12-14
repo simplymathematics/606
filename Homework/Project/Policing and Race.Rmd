@@ -17,9 +17,10 @@ $H_0:$ There is no evidence of racialized policing.
 $H_A:$ There is evidence of racialized policing.  
 
 ## Observations
-I downloaded the 2017 arrest data from NYC Open Data. It contains the records of 1.7 million arrests. That's almost 1/4 peolple in NYC! From there, I took a simple random sample of these arrests using the Linux kernel utility shuf. At 260 MB the original file was far too large to read into memory at once. 
+I downloaded the 2016 arrest data from NYC Open Data as it was the most recent data available. It contains the records of 1.7 million arrests. That's almost 1/4 peolple in NYC! From there, I took a simple random sample of these arrests using the Linux kernel utility shuf. At 260 MB the original file was far too large to read into memory at once. Additionally, a large sample size will lead to artificially high $X^2$ values. Instead, I used a linux utility ```shuf``` to randomly collect a sample of 300 arrests using the below line of code. 
+
 ```
-shuf -n 60000 NYPD_Arrests_Data__Historic_.csv > arrest_sample.csv
+shuf -n 300 sqf-2016.csv > sqf-2016.csv
 ```
 ##  Data Collection
 Demographic data was obtained from the 2010 census records and the 2017 data was randomly sampled from all arrest data in NYC. 
@@ -29,20 +30,19 @@ This is an observational study that will attempt to relate arrest rates to the r
 
 ## Scope of Inference 
 
-Our data is within the scope of our model. Our observations are a simple random sample of all arrests. Each cell in the contigency table has more than 5 expected cases. If assume that each arrest is independent of the others, than these are independent events. Additionally, because the 2010 census data was the most recent available, large demographic changes from these numbers would influence the results. However, the rapid gentrification of the city would suggest a whiter population, which amplify any existing disparity beyond what we measure here.
+Our data is within the scope of our model. Our observations are a simple random sample of all arrests. Each cell in the contigency table has more than 5 expected cases. If assume that each arrest is independent of the others, than these are independent events. Additionally, because the 2010 census data was the most recent available, large demographic changes from these numbers would influence the results. However, the rapid gentrification of the city would suggest a whiter population, which would amplify any existing disparity beyond what we measure here. Pearson's Chi-Sq test is appropriate because it relates two distributions by measuring the distance between two numbers in a given category, squaring that figure, and dividing it by the expected value. This gives us a number that describes the scale of difference between these two numbers. Because that number is scaled by the expected value, the two datasets do not have to be normalized. Finally, in order to minimize the difference in scales between the two sets, I scaled the expected values based off the total number of arrests.
 
 # Exploratory Data Analysis
 
 ```{r echo = FALSE}
 
-
-stops <- read.csv("sqf-2017.csv")
-with(stops, table(stops$race, stops$year));
-stop.amer.ind <- 38
-stop.asian.pacific <-737
-stop.white <- 1270
-stop.hispanic <- 873 + 2753
-stop.black <-6498+873
+stops <- read.csv("small_sample.csv")
+show_this <- with(stops, table(stops$Q, stops$X2016));
+stop.amer.ind <- 2
+stop.asian.pacific <-12
+stop.white <- 28
+stop.hispanic <- 59+22
+stop.black <-171+59
 stops <- c(stop.amer.ind, stop.asian.pacific, stop.black, stop.hispanic, stop.white) 
 
 
@@ -62,16 +62,15 @@ exp.hispanic <-(2158851+177225)
 measured <- c(stop.amer.ind, stop.asian.pacific, stop.black, stop.hispanic, stop.white)
 expected <- c(exp.amer.ind, exp.asian.pacific, exp.black, exp.hispanic, exp.white)/total*stop.total
 expected.total <- sum(expected)
-
 ```
 We can see the demographic breakdown of NYC by race below.
 ```{r echo = FALSE}
-barplot(expected, main ="Population by Race", names.arg = c("Amerindian", "Asian",  "Black", "Hispanic", "White"))
+barplot(expected, main ="Expected Number of Arrests by Race", names.arg = c("Amerindian", "Asian",  "Black", "Hispanic", "White"))
 
 ```
 
 
-Likewise, we can see the same categories when it comes to policing. Even from these simple bar graphs, we can see a substantial difference in these numbers. In particular, black people are twice as likely to be stopped as their population suggests. Additionally, white people are a fraction of likely to be stopped by police as their population would suggest. 
+Likewise, we can see the same categories when it comes to policing. Even from these simple bar graphs, we can see a substantial difference in these numbers. In particular, black people are twice as likely to be stopped as their population suggests. Additionally, white people are a fraction of likely to be stopped by police as their population would suggest. Furthermore, it's striking that there were 1.7 million arrests in 2017! That's nearly 1 arrest for every 4 New Yorkers. 
 ```{r echo=FALSE}
 barplot(measured, main ="Police Stops by Race", names.arg = c("Amerindian", "Asian",  "Black", "Hispanic", "White"))
 ```
@@ -83,7 +82,7 @@ chisq.test(as.table(rbind(measured,expected)), simulate.p.value = FALSE)
 
 # Conclusions
 
-Because the p-vaule of $2.2*10^{-16} < .01,$ we can reject the null hypothesis that there is no evidence for racialized policing. However, the lack of current demographic data makes the demographic data an estimate, which could skew the results. As discussed above, I'd expect the results to skew towards racialized policing as the city becomes more white, but without annual demographic data, it is impossible to tell. Since the study focuses on stops rather than arrests, it highlight the collective experience of individual officers. To that end, it may be highlighting individualized racial biases rather than systemic policy. Additionally, other factors like socio-economic indicators and neighborhood could cause some underlying relationships. However, what's clear from this data is that NYPD policing disproportionately effects communities of color whether by causal policy, systemic bias, or a confluence of factors outside the control of the NYPD. In order to parse one cause from another, it would be interesting to look out the break-down of crimes and criminal outcomes across race rather than just number of of stops. However, that was outside the scope of this project.
+Because the p-vaule of $2.2*10^{-16} < .01,$ we can reject the null hypothesis that there is no evidence for racialized policing. However, the lack of current demographic data makes the demographic data an estimate, which could skew the results. As discussed above, I'd expect the results to skew towards racialized policing as the city becomes more white However, without annual demographic data, it is impossible to tell. Since the study focuses on stops rather than arrests, it highlights the collective experience of individual officers. To that end, it may be highlighting individualized racial biases rather than systemic policy. Additionally, other factors like socio-economic indicators and neighborhood could cause some underlying relationships. However, what's clear from this data is that NYPD policing disproportionately effects communities of color whether by causal policy, systemic bias, or a confluence of factors outside the control of the NYPD. In order to parse one cause from another, it would be interesting to look out the break-down of crimes and criminal outcomes across race rather than just number of of stops. However, that was outside the scope of this project.
 
 
 # Sources : 

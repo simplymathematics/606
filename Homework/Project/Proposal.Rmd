@@ -21,7 +21,7 @@ with(stops, table(stops$race, stops$year));
 stop.amer.ind <- 38
 stop.asian.pacific <-737
 stop.white <- 1270
-stop.hispanic <- 873 + 2753
+stop.hispanic <- 873 + 2753 
 stop.black <-6498+873
 stops <- c(stop.amer.ind, stop.asian.pacific, stop.black, stop.hispanic, stop.white) 
 
@@ -74,9 +74,8 @@ Race
 # Relevant Statistics
 
 
+
 ```{r}
-barplot(expected, main ="Population by Race", names.arg = c("Amerindian", "Asian",  "Black", "Hispanic", "White"))
-barplot(measured, main ="Police Stops by Race", names.arg = c("Amerindian", "Asian",  "Black", "Hispanic", "White"))
 
 chi.sq.statistic <- sum(((measured-expected)^2)/expected)
 pchisq(chi.sq.statistic, df = 4, lower.tail=FALSE)
