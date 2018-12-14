@@ -13,8 +13,8 @@ Stop and frisk (also known as stop, question, frisk by the NYPD) has been a cont
 ## Research Question
 From the self-reported NYPD data, is there evidence of racialized policing? We will use a $\alpha = .01$ for our confidence level.
 
-$H_0:$ There is no evidence of racialized policing.  
-$H_A:$ There is evidence of racialized policing.  
+$H_0:$ The chance of being stopped by the police is independent from a person's race.  
+$H_A:$ The chance of being stopped by the police is not independent from a person's race.   
 
 ## Observations
 I downloaded the 2016 arrest data from NYC Open Data as it was the most recent data available. It contains the records of 1.7 million arrests. That's almost 1/4 peolple in NYC! From there, I took a simple random sample of these arrests using the Linux kernel utility shuf. At 260 MB the original file was far too large to read into memory at once. Additionally, a large sample size will lead to artificially high $X^2$ values. Instead, I used a linux utility ```shuf``` to randomly collect a sample of 300 arrests using the below line of code. 
@@ -82,7 +82,7 @@ chisq.test(as.table(rbind(measured,expected)), simulate.p.value = FALSE)
 
 # Conclusions
 
-Because the p-vaule of $2.2*10^{-16} < .01,$ we can reject the null hypothesis that there is no evidence for racialized policing. However, the lack of current demographic data makes the demographic data an estimate, which could skew the results. As discussed above, I'd expect the results to skew towards racialized policing as the city becomes more white However, without annual demographic data, it is impossible to tell. Since the study focuses on stops rather than arrests, it highlights the collective experience of individual officers. To that end, it may be highlighting individualized racial biases rather than systemic policy. Additionally, other factors like socio-economic indicators and neighborhood could cause some underlying relationships. However, what's clear from this data is that NYPD policing disproportionately effects communities of color whether by causal policy, systemic bias, or a confluence of factors outside the control of the NYPD. In order to parse one cause from another, it would be interesting to look out the break-down of crimes and criminal outcomes across race rather than just number of of stops. However, that was outside the scope of this project.
+Because the p-vaule of $2.2*10^{-16} < .01,$ we can reject the null hypothesis. There appears to be evidence that your likelihood of being stopped by the police is correlated with one's race. However, the lack of current demographic data makes the demographic data an estimate, which could skew the results. As discussed above, I'd expect the results to skew towards racialized policing as the city becomes more white. However, without annual demographic data, it is impossible to tell. Since the study focuses on stops rather than arrests, it highlights the collective experience of individual officers rather than the result of a long court system. To that end, it may be highlighting individualized racial biases rather than systemic policy. Additionally, other factors like socio-economic indicators and neighborhood could cause some underlying relationships. However, what's clear from this data is that NYPD policing disproportionately effects communities of color whether by causal policy, systemic bias, or a confluence of factors outside the control of the NYPD. In order to parse one cause from another, it would be interesting to look out the break-down of crimes and criminal outcomes across race rather than just number of of stops. However, that was outside the scope of this project.
 
 
 # Sources : 
