@@ -13,8 +13,8 @@ Stop and frisk (also known as stop, question, frisk by the NYPD) has been a cont
 ## Research Question
 From the self-reported NYPD data, is there evidence of racialized policing? We will use a $\alpha = .01$ for our confidence level.
 
-$H_0:$ There is no evidence of racialized policing.
-$H_A:$ There is evidence of racialized policing.
+$H_0:$ There is no evidence of racialized policing.  
+$H_A:$ There is evidence of racialized policing.  
 
 ## Observations
 I downloaded the 2017 arrest data from NYC Open Data. It contains the records of 1.7 million arrests. That's almost 1/4 peolple in NYC! From there, I took a simple random sample of these arrests using the Linux kernel utility shuf. At 260 MB the original file was far too large to read into memory at once. 
@@ -69,6 +69,8 @@ We can see the demographic breakdown of NYC by race below.
 barplot(expected, main ="Population by Race", names.arg = c("Amerindian", "Asian",  "Black", "Hispanic", "White"))
 
 ```
+
+
 Likewise, we can see the same categories when it comes to policing. Even from these simple bar graphs, we can see a substantial difference in these numbers. In particular, black people are twice as likely to be stopped as their population suggests. Additionally, white people are a fraction of likely to be stopped by police as their population would suggest. 
 ```{r echo=FALSE}
 barplot(measured, main ="Police Stops by Race", names.arg = c("Amerindian", "Asian",  "Black", "Hispanic", "White"))
@@ -81,13 +83,12 @@ chisq.test(as.table(rbind(measured,expected)), simulate.p.value = FALSE)
 
 # Conclusions
 
-Because the p-vaule of $2.2*10^{-16} < .01,$ we can reject the null hypothesis that there is no evidence for racialized policing. However, the lack of current demographic data makes the demographic data an estimate, which could skew the results. As discussed above, I'd expect the results to skew towards racialized policing as the city becomes more white, but without annual demographic data, it is impossible to tell. Since the study focuses on stops rather than arrests, it highlight the collective experience of individual officers. To that end, it may be highlighting individualized racial biases rather than systemic policy. Additionally, other factors like socio-economic indicators and neighborhood could cause some underlying relationships. However, what's clear from this data is that NYPD policing disproportionately effects communities of color whether by causal policy, systemic bias, or a confluence of factors outside the control of the NYPD. In order to parse one cause from another, it would be interesting to look out the break-down of crimes and criminal outcomes across race rather than just stops. However, that was outside the scope of this project.
+Because the p-vaule of $2.2*10^{-16} < .01,$ we can reject the null hypothesis that there is no evidence for racialized policing. However, the lack of current demographic data makes the demographic data an estimate, which could skew the results. As discussed above, I'd expect the results to skew towards racialized policing as the city becomes more white, but without annual demographic data, it is impossible to tell. Since the study focuses on stops rather than arrests, it highlight the collective experience of individual officers. To that end, it may be highlighting individualized racial biases rather than systemic policy. Additionally, other factors like socio-economic indicators and neighborhood could cause some underlying relationships. However, what's clear from this data is that NYPD policing disproportionately effects communities of color whether by causal policy, systemic bias, or a confluence of factors outside the control of the NYPD. In order to parse one cause from another, it would be interesting to look out the break-down of crimes and criminal outcomes across race rather than just number of of stops. However, that was outside the scope of this project.
 
 
 # Sources : 
 [Chi-Square Test](http://mathworld.wolfram.com/Chi-SquaredTest.html)
 
-Source for expected values:[2010 Census:](https://factfinder.census.gov/faces/tableservices/jsf/pages/productview.xhtml?src=CF)
-Source for measured values: [NYC Open Data](https://data.cityofnewyork.us/Public-Safety/The-Stop-Question-and-Frisk-Data/ftxv-d5ix/data)
-
-Source for Stop and Frisk Lawsuit: [Floyd v City of New York](https://ccrjustice.org/sites/default/files/assets/Floyd_Complaint_08.01.31.pdf)
+Source for expected values:[2010 Census:](https://factfinder.census.gov/faces/tableservices/jsf/pages/productview.xhtml?src=CF)  
+Source for measured values: [NYC Open Data](https://data.cityofnewyork.us/Public-Safety/The-Stop-Question-and-Frisk-Data/ftxv-d5ix/data)  
+Source for Stop and Frisk Lawsuit: [Floyd v City of New York](https://ccrjustice.org/sites/default/files/assets/Floyd_Complaint_08.01.31.pdf)  
