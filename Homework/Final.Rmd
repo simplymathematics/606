@@ -1,0 +1,92 @@
+---
+title: "606 Final"
+author: "simplymathematics"
+date: "December 13, 2018"
+output: html_document
+---
+
+# Final 
+
+## Part 1
+
+### Problem 1
+
+daysDrive is quantitative and discrete since it is an integer that represents the number of days a week a student drives to school.
+
+### Problem 2
+
+The plot reveals that the data is skewed right, meaning the mean is higher than the median. This only leaves B and D as potential answers. However, we can see that the median is likely higher than 2.9, so we are left with B.
+
+### Problem 3
+
+A randomized, controlled trial is the correct way to determine the efficacy of a drug. This is option A. An observational study like is proposed in B would suffer from survivorship bias. People who don't survive Ebola would never make it into the statistics.
+
+### Problem 4
+
+If a large $X^2$ value is obtained between two vectors representing hair and eye color, then we can say there is a relationship between the two.
+
+### Problem 5
+Boxplots show the IQR or the range from Q1 to Q3. Therefore, in order to see if a score is an outlier we need those two numbers. In this cases it is 37 and 49.8 (A). 
+
+### Problem 6
+
+Median and IQR are resistant to outliers. Mean and standard deviation are not.
+
+### Problem 7
+
+#### a 
+
+The observation distribution is  nearly normally distributed, but is skewed left.  Thesampling distribution is more symmetric, but has smaller standard deviation.
+
+#### b
+
+The means of these two disitributions are similar even though their standard deviations differ because standard deviation is calculated as the sum of residuals squared. Since the observation distribution has a smaller number of instances, we would expect its sum of residuals to be smaller. Likewise, we would expect a smaller standard deviation.
+
+#### c
+The central limit theorem says that as we add more observations of independent random variables, their normalized sum tends towards the normal distribution. 
+
+
+## Part 2
+```{r}
+x1 <- c(10,8,13,9,11,14,6,4,12,7,5)
+y1 <- c(8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 7.24, 4.26, 10.84, 4.82, 5.68)
+
+```
+
+### a
+```{r}
+mean(x1)
+mean(y1)
+```
+
+### b
+```{r}
+median(x1)
+median(y1)
+```
+### c
+```{r}
+sd(x1)
+sd(y1)
+```
+### d
+```{r}
+cor(x1,y1)
+```
+### e
+```{r}
+model1 <- lm(y1~x1)
+
+model1
+```
+### f
+```{r}
+summary(model1)
+```
+### g
+```{r}
+plot(x1,y1)
+abline(model1)
+plot(model1)
+```
+### h
